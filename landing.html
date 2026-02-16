@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подарки за ваши электронные чеки</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAFAF8;
+            --bg-card: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B6B6B;
+            --text-muted: #9A9A9A;
+            --accent: #2C5F2D;
+            --accent-light: #E8F0E8;
+            --accent-hover: #1E4620;
+            --border: #E8E6E3;
+            --border-focus: #2C5F2D;
+            --error: #C0392B;
+            --success: #2C5F2D;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-display: 'Nunito', system-ui, sans-serif;
+            --font-body: 'Nunito', system-ui, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(250, 250, 248, 0.9);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+            text-align: center;
+        }
+
+        .oneliner {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 6vw, 44px);
+            line-height: 1.15;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.2s forwards;
+        }
+
+        /* ===== FORM CARD ===== */
+        .form-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            text-align: left;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.3s forwards;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text-primary);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-group input.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.08);
+        }
+
+        .form-group input.success {
+            border-color: var(--success);
+        }
+
+        .error-message {
+            font-size: 13px;
+            color: var(--error);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Phone row */
+        .phone-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .phone-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .btn-confirm-phone {
+            margin-top: 26px;
+            padding: 14px 18px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent);
+            background: var(--accent-light);
+            border: 1.5px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-confirm-phone:hover:not(:disabled) {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-confirm-phone:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-confirm-phone.confirmed {
+            background: var(--accent);
+            color: white;
+            pointer-events: none;
+        }
+
+        .btn-confirm-phone.confirmed::after {
+            content: ' \2713';
+        }
+
+        /* Checkboxes */
+        .checkbox-group {
+            margin-bottom: 16px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            margin-top: 1px;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .checkbox-label input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 7px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .checkbox-label a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* CTA Button */
+        .btn-cta {
+            width: 100%;
+            padding: 16px 24px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: var(--accent);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-cta:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-cta:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-cta:disabled {
+            background: var(--border);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .section {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 0 24px 64px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .step-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .step-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background 0.2s ease;
+        }
+
+        .faq-icon svg {
+            width: 12px;
+            height: 12px;
+            stroke: var(--text-secondary);
+            stroke-width: 2;
+            fill: none;
+            transition: stroke 0.2s ease;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+            background: var(--accent-light);
+        }
+
+        .faq-item.open .faq-icon svg {
+            stroke: var(--accent);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-inner {
+            padding: 0 20px 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* ===== THANK YOU SCREEN ===== */
+        .thank-you-screen {
+            display: none;
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .thank-you-screen.visible {
+            display: block;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .thank-you-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--accent-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+
+        .thank-you-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--accent);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .thank-you-screen h2 {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .thank-you-screen p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Native banner */
+        .gift-banner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            text-align: left;
+        }
+
+        .gift-banner-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            background: var(--accent-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .gift-banner-content {
+            flex: 1;
+        }
+
+        .gift-banner-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .gift-banner-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .btn-gift {
+            padding: 10px 20px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-light);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .btn-gift:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ===== MAIN CONTENT WRAPPER ===== */
+        .main-content {
+            transition: opacity 0.3s ease;
+        }
+
+        .main-content.hidden {
+            display: none;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 32px 20px 48px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 15px;
+                margin-bottom: 28px;
+            }
+
+            .form-card {
+                padding: 24px 20px;
+            }
+
+            .phone-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn-confirm-phone {
+                margin-top: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .section {
+                padding: 0 20px 48px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .gift-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+                padding: 20px;
+            }
+
+            .thank-you-screen {
+                padding: 48px 20px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .form-card {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 110-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 100-5C13 2 12 7 12 7z" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="logo-text">Витрина подарков</span>
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+
+        <!-- Hero + Form -->
+        <section class="hero">
+            <div class="oneliner">🧾 Подарки за ваши электронные чеки</div>
+            <h1>Покупаете в интернете? Получайте подарки за&nbsp;ваши&nbsp;чеки 🎁</h1>
+            <p class="hero-subtitle">Подключитесь за 1 минуту и начните получать подарки по почте от банков, магазинов, медиасервисов, онлайн-школ. Бесплатно.</p>
+
+            <div class="form-card">
+                <form id="leadForm" novalidate>
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" id="name" name="name" placeholder="Александр" autocomplete="given-name" required>
+                        <div class="error-message" id="nameError">Введите ваше имя</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="alex@example.com" autocomplete="email" required>
+                        <div class="error-message" id="emailError">Введите корректный email</div>
+                    </div>
+
+                    <div class="phone-row">
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+7 (999) 123-45-67" autocomplete="tel" required>
+                            <div class="error-message" id="phoneError">Введите номер телефона</div>
+                        </div>
+                        <button type="button" class="btn-confirm-phone" id="confirmPhone" disabled>Подтвердить</button>
+                    </div>
+
+                    <div style="margin-top: 20px;"></div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="consentPD" required>
+                            <span>Даю согласие на <a href="#" target="_blank" rel="noopener">обработку персональных данных</a></span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="consentAds" required>
+                            <span>Даю согласие на получение <a href="#" target="_blank" rel="noopener">рекламных рассылок</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-cta" id="submitBtn" disabled>Получить подарки</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="section fade-in">
+            <h2 class="section-title">Как это работает</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Вы покупаете как обычно 🛒</h3>
+                        <p>Ничего не нужно менять в привычках</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Мы подбираем подарки ✨</h3>
+                        <p>На основе ваших чеков находим персональные предложения от партнёров</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Вы получаете подарки на почту 📬</h3>
+                        <p>Открываете письмо, выбираете подарок, пользуетесь</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section fade-in">
+            <h2 class="section-title">Частые вопросы</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" type="button">
+                        Зачем вам мои данные?
+                        <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Мы собираем имя, email и телефон, чтобы подключить вас к сервису и отправлять персональные предложения. Данные обрабатываются в соответствии с ФЗ-152 «О персональных данных». Вы даёте согласие явно и можете отозвать его в любой момент.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button">
+                        Это бесплатно? В чём подвох?
+                        <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Полностью бесплатно. Подарки предоставляют наши партнёры — банки, медиасервисы, онлайн-школы. Для вас это бонусы, для партнёров — возможность предложить свои продукты заинтересованной аудитории.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button">
+                        Мне будут приходить спам-рассылки?
+                        <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Нет. Только персональные предложения на основе ваших покупок. Отписаться можно в один клик в любом письме.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button">
+                        Нужно сканировать чеки или что-то делать вручную?
+                        <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Нет. Данные о покупках подтягиваются автоматически через сервис ФНС «Мои чеки онлайн». Ничего фотографировать или загружать не нужно.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Thank You Screen -->
+    <div class="thank-you-screen" id="thankYouScreen">
+        <div class="thank-you-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <h2>Готово! Вы подключены</h2>
+        <p>Спасибо! Мы получили ваши данные. Скоро вы начнёте получать персональные предложения с подарками на указанный email.</p>
+
+        <div class="gift-banner">
+            <div class="gift-banner-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 110-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 100-5C13 2 12 7 12 7z" stroke="#2C5F2D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="gift-banner-content">
+                <div class="gift-banner-text">Вам доступен 1 подарок за прохождение формы</div>
+            </div>
+            <a href="#" class="btn-gift">Выбрать</a>
+        </div>
+    </div>
+
+    <script>
+        // ===== DOM Elements =====
+        const form = document.getElementById('leadForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const confirmPhoneBtn = document.getElementById('confirmPhone');
+        const consentPD = document.getElementById('consentPD');
+        const consentAds = document.getElementById('consentAds');
+        const submitBtn = document.getElementById('submitBtn');
+        const mainContent = document.getElementById('mainContent');
+        const thankYouScreen = document.getElementById('thankYouScreen');
+
+        let phoneConfirmed = false;
+
+        // ===== Phone Mask =====
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value.length === 0) {
+                e.target.value = '';
+                confirmPhoneBtn.disabled = true;
+                phoneConfirmed = false;
+                confirmPhoneBtn.classList.remove('confirmed');
+                confirmPhoneBtn.textContent = 'Подтвердить';
+                updateSubmitState();
+                return;
+            }
+
+            if (value[0] === '8') {
+                value = '7' + value.slice(1);
+            }
+            if (value[0] !== '7') {
+                value = '7' + value;
+            }
+
+            let formatted = '+7';
+            if (value.length > 1) formatted += ' (' + value.slice(1, 4);
+            if (value.length > 4) formatted += ') ' + value.slice(4, 7);
+            if (value.length > 7) formatted += '-' + value.slice(7, 9);
+            if (value.length > 9) formatted += '-' + value.slice(9, 11);
+
+            e.target.value = formatted;
+
+            const digits = value.length;
+            if (digits >= 11) {
+                confirmPhoneBtn.disabled = false;
+            } else {
+                confirmPhoneBtn.disabled = true;
+                phoneConfirmed = false;
+                confirmPhoneBtn.classList.remove('confirmed');
+                confirmPhoneBtn.textContent = 'Подтвердить';
+            }
+
+            updateSubmitState();
+        });
+
+        // ===== Confirm Phone =====
+        confirmPhoneBtn.addEventListener('click', function() {
+            phoneConfirmed = true;
+            this.classList.add('confirmed');
+            this.textContent = 'Подтверждён';
+            hideError('phone');
+            updateSubmitState();
+        });
+
+        // ===== Email Validation =====
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // ===== Error Handling =====
+        function showError(field) {
+            const input = document.getElementById(field);
+            const error = document.getElementById(field + 'Error');
+            input.classList.add('error');
+            input.classList.remove('success');
+            if (error) error.classList.add('visible');
+        }
+
+        function hideError(field) {
+            const input = document.getElementById(field);
+            const error = document.getElementById(field + 'Error');
+            input.classList.remove('error');
+            if (error) error.classList.remove('visible');
+        }
+
+        // ===== Update Submit Button State =====
+        function updateSubmitState() {
+            const nameFilled = nameInput.value.trim().length > 0;
+            const emailFilled = emailInput.value.trim().length > 0;
+            const phoneFilled = phoneInput.value.trim().length > 0;
+            const bothChecked = consentPD.checked && consentAds.checked;
+
+            submitBtn.disabled = !(nameFilled && emailFilled && phoneFilled && phoneConfirmed && bothChecked);
+        }
+
+        // Listen for changes
+        [nameInput, emailInput, phoneInput].forEach(input => {
+            input.addEventListener('input', function() {
+                hideError(this.id);
+                updateSubmitState();
+            });
+        });
+
+        [consentPD, consentAds].forEach(cb => {
+            cb.addEventListener('change', updateSubmitState);
+        });
+
+        // ===== Form Submit =====
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let hasErrors = false;
+
+            if (!nameInput.value.trim()) {
+                showError('name');
+                hasErrors = true;
+            }
+
+            if (!isValidEmail(emailInput.value.trim())) {
+                showError('email');
+                hasErrors = true;
+            }
+
+            if (!phoneConfirmed) {
+                showError('phone');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            // Prepare data for Google Sheets
+            const formData = {
+                timestamp: new Date().toISOString(),
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                consentPD: consentPD.checked ? 'Да' : 'Нет',
+                consentAds: consentAds.checked ? 'Да' : 'Нет'
+            };
+
+            // TODO: Replace with actual Google Sheets API endpoint
+            // Example using Google Apps Script Web App:
+            //
+            // fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+            //     method: 'POST',
+            //     body: JSON.stringify(formData)
+            // });
+
+            console.log('Form data:', formData);
+
+            // Show thank you screen
+            mainContent.classList.add('hidden');
+            thankYouScreen.classList.add('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== FAQ Accordion =====
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const item = this.parentElement;
+                const isOpen = item.classList.contains('open');
+
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+                // Toggle current
+                if (!isOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+
+        // ===== Scroll Animations =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
